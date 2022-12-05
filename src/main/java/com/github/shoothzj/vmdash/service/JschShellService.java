@@ -41,7 +41,7 @@ public class JschShellService implements IShellService {
     private VmSshConfig sshConfig;
 
     @Override
-    public ShellResult execCommand(String command) throws Exception {
+    public ShellResult execCmd(String command) throws Exception {
         final ShellResult shellResult = new ShellResult();
         Session session = null;
         ChannelExec channel = null;

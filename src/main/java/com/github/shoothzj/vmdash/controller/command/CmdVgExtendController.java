@@ -17,19 +17,10 @@
  * under the License.
  */
 
-package com.github.shoothzj.vmdash.service;
+package com.github.shoothzj.vmdash.controller.command;
 
-import com.github.shoothzj.vmdash.constant.ShellConst;
-import com.github.shoothzj.vmdash.module.ShellResult;
+import org.springframework.web.bind.annotation.RestController;
 
-public interface IShellService {
-    default String[] execCmdIgnoreFail(String command) throws Exception {
-        final ShellResult sshShellResult = execCmd(command);
-        if (sshShellResult.getReturnCode() != 0) {
-            throw new Exception(String.format("exec shell exception, command is %s return code is %d error is %s",
-                    command, sshShellResult.getReturnCode(), sshShellResult.getErrorContent()));
-        }
-        return sshShellResult.getOutputContent().split(ShellConst.LINE_SPLIT);
-    }
-    ShellResult execCmd(String command) throws Exception;
+@RestController
+public class CmdVgExtendController {
 }

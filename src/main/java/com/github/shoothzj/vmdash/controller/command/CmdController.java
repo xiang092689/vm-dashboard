@@ -17,28 +17,27 @@
  * under the License.
  */
 
-package com.github.shoothzj.vmdash.service;
+package com.github.shoothzj.vmdash.controller.command;
 
-import com.github.shoothzj.vmdash.module.ProcModule;
+import com.github.shoothzj.vmdash.module.ShellResult;
+import com.github.shoothzj.vmdash.service.IShellService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+@RestController
+public class CmdController {
 
-public class ProcShellService implements IProcService {
+    private final IShellService shellService;
 
-    @Autowired
-    private IShellService shellService;
-
-    @Override
-    public List<ProcModule> listProc() throws Exception {
-        final String[] outputArray = shellService.execCmdIgnoreFail("ps -ef");
-        List<ProcModule> procModuleList = new ArrayList<>();
-        for (int i = 1; i < outputArray.length; i++) {
-            String procLine = outputArray[i];
-            final String[] split = procLine.split("\\s+");
-            procModuleList.add(new ProcModule(split[0], Integer.parseInt(split[1])));
-        }
-        return procModuleList;
+    public CmdController(@Autowired IShellService shellService) {
+        this.shellService = shellService;
     }
+
+    @PostMapping(path = "/api/cmd/exec")
+    public ShellResult execCmd(@RequestBody String cmd) throws Exception {
+        return shellService.execCmd(cmd);
+    }
+
 }

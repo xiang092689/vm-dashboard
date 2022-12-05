@@ -17,28 +17,29 @@
  * under the License.
  */
 
-package com.github.shoothzj.vmdash.service;
+package com.github.shoothzj.vmdash.controller;
 
-import com.github.shoothzj.vmdash.module.ProcModule;
+import com.github.shoothzj.vmdash.module.CreateDirReq;
+import com.github.shoothzj.vmdash.service.FsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
-public class ProcShellService implements IProcService {
+@RestController
+public class DirController {
 
-    @Autowired
-    private IShellService shellService;
+    private final FsService fsService;
 
-    @Override
-    public List<ProcModule> listProc() throws Exception {
-        final String[] outputArray = shellService.execCmdIgnoreFail("ps -ef");
-        List<ProcModule> procModuleList = new ArrayList<>();
-        for (int i = 1; i < outputArray.length; i++) {
-            String procLine = outputArray[i];
-            final String[] split = procLine.split("\\s+");
-            procModuleList.add(new ProcModule(split[0], Integer.parseInt(split[1])));
-        }
-        return procModuleList;
+    public DirController(@Autowired FsService fsService) {
+        this.fsService = fsService;
     }
+
+    @PostMapping(path = "/api/dir")
+    public void createDir(@RequestBody CreateDirReq createDirReq) throws IOException {
+        fsService.mkdir(createDirReq);
+    }
+
 }

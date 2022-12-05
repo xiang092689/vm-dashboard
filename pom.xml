@@ -40,6 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- dependency -->
         <annotations.version>13.0</annotations.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <jsch.version>0.2.4</jsch.version>
         <lombok.version>1.18.24</lombok.version>
         <mina.version>2.9.2</mina.version>
@@ -91,6 +92,11 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

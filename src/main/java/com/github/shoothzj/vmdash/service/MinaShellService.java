@@ -39,7 +39,7 @@ public class MinaShellService implements IShellService {
     private VmSshConfig sshConfig;
 
     @Override
-    public ShellResult execCommand(String command) throws Exception {
+    public ShellResult execCmd(String command) throws Exception {
         final ShellResult shellResult = new ShellResult();
         final SshClient sshClient = SshClient.setUpDefaultClient();
         sshClient.start();

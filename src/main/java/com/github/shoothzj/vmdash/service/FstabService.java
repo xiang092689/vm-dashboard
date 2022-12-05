@@ -19,26 +19,30 @@
 
 package com.github.shoothzj.vmdash.service;
 
-import com.github.shoothzj.vmdash.module.ProcModule;
+import com.github.shoothzj.vmdash.constant.PathConst;
+import com.github.shoothzj.vmdash.module.FstabModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
-public class ProcShellService implements IProcService {
+@Service
+public class FstabService {
 
-    @Autowired
-    private IShellService shellService;
+    private final FsService fsService;
 
-    @Override
-    public List<ProcModule> listProc() throws Exception {
-        final String[] outputArray = shellService.execCmdIgnoreFail("ps -ef");
-        List<ProcModule> procModuleList = new ArrayList<>();
-        for (int i = 1; i < outputArray.length; i++) {
-            String procLine = outputArray[i];
-            final String[] split = procLine.split("\\s+");
-            procModuleList.add(new ProcModule(split[0], Integer.parseInt(split[1])));
-        }
-        return procModuleList;
+    public FstabService(@Autowired FsService fsService) {
+        this.fsService = fsService;
     }
+
+    public void addFstabModule(FstabModule fstabModule) throws IOException {
+        String fstabStr = fstabModule.getFstabStr();
+        fsService.appendStr(fstabStr, PathConst.FSTAB);
+    }
+
+    public List<FstabModule> getFstabModules() throws IOException {
+        return FstabModule.parse(fsService.readLines(PathConst.FSTAB));
+    }
+
 }
